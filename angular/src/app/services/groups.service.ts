@@ -25,8 +25,8 @@ export class GroupsService {
     return this.http.post<Group>(`${this.baseURL}/groups`, group);
   }
 
-  update(group: Group): Observable<Group> {
-    return this.http.put<Group>(`${this.baseURL}/groups`, group);
+  update(id: number, group: Group): Observable<Group> {
+    return this.http.put<Group>(`${this.baseURL}/groups/${id}`, group);
   }
 
   delete(id: number): Observable<any> {

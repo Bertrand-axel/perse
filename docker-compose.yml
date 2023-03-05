@@ -35,6 +35,48 @@ services:
       - traefik.port=9000
     networks:
       - frontend
+
+  mysql:
+    image: mysql:8
+    restart: on-failure
+    environment:
+      MYSQL_DATABASE: perse
+      MYSQL_USER: perse_user
+      MYSQL_PASSWORD: perse_password
+      MYSQL_ROOT_PASSWORD: root_password
+#      MYSQL_RANDOM_ROOT_PASSWORD: 1
+    volumes:
+      - perse-mysql:/var/lib/mysql
+      - .:/perse:delegated
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+
+  symfony:
+    links:
+      - mysql:db
+    depends_on:
+      - mysql
+    build:
+      context: .
+      target: perse-php
+    entrypoint: ./bin/symfony serve
+    environment:
+      PHP_EXTENSION_INTL: 1
+      PHP_EXTENSION_MCRYPT: 1
+      PHP_EXTENSION_UUID: 1
+    volumes:
+      - ./api:/var/www/html:delegated
+    labels:
+      - traefik.docker.network=frontend
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:perse.localhost;PathPrefix:/api
+      - traefik.frontend.protocol=http,https
+      - traefik.port=8000
+    networks:
+      - frontend
+      - backend
   angular:
     build:
       context: .
@@ -55,45 +97,6 @@ services:
       - traefik.port=4300
     networks:
       - frontend
-
-  mysql:
-    image: mysql:8
-    restart: on-failure
-    environment:
-      MYSQL_DATABASE: perse
-      MYSQL_ROOT_PASSWORD: perse_password
-    volumes:
-      - perse-mysql:/var/lib/mysql
-      - .:/perse:delegated
-    labels:
-      - traefik.docker.network=frontend
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:db.perse.localhost
-      - traefik.frontend.protocol=tcp
-      - traefik.port=3306
-    networks:
-      - backend
-
-  symfony:
-    links:
-      - mysql:db
-    depends_on:
-      - mysql
-    build:
-      context: .
-      target: perse-php
-    entrypoint: ./bin/symfony serve
-    volumes:
-      - ./api:/var/www/html:delegated
-    labels:
-      - traefik.docker.network=frontend
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:perse.localhost;PathPrefixStrip:/api
-      - traefik.frontend.protocol=http,https
-      - traefik.port=8000
-    networks:
-      - frontend
-      - backend
 
 
 volumes:

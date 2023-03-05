@@ -5,9 +5,10 @@ import {GroupFormComponent} from "./components/group/group-form/group-form.compo
 import {GroupResolver} from "./services/group.resolver";
 
 const routes: Routes = [
-  {path: 'groups', component: GroupListComponent},
-  { path: 'groups/new', component: GroupFormComponent},
-  { path: 'groups/:id', component: GroupFormComponent, resolve: {'groupResolver': GroupResolver}},
+  { path: 'groups', component: GroupListComponent },
+  { path: 'groups/new', component: GroupFormComponent },
+  { path: 'groups/:id', component: GroupFormComponent, resolve: {'groupResolver': GroupResolver} },
+  { path: '**', redirectTo: 'groups' }
 ];
 
 @NgModule({

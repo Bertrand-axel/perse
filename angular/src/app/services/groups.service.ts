@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Group} from "../models/group.model";
+import {map} from "rxjs/operators";
+import {Pageable} from "../models/pageable.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ export class GroupsService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Group[]> {
-    return this.http.get<Group[]>(`${this.baseURL}/groups`);
+    return this.http.get<Pageable<Group>>(`${this.baseURL}/groups`).pipe(map(response => response['hydra:member']));
   }
 
   get(id: number): Observable<Group> {
@@ -28,6 +30,6 @@ export class GroupsService {
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete(`${this.baseURL}/api/groups/${id}`);
+    return this.http.delete(`${this.baseURL}/groups/${id}`);
   }
 }

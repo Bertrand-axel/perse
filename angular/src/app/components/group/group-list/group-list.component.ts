@@ -18,15 +18,22 @@ export class GroupListComponent implements AfterViewInit {
   dataSource: GroupListDatasource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['id', 'name', 'origin', 'actions'];
 
-  constructor(groupsService: GroupsService) {
-    this.dataSource = new GroupListDatasource(groupsService);
+  constructor(private groupsService: GroupsService) {
+    this.dataSource = new GroupListDatasource(this.groupsService);
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+    this.dataSource.loadData();
+  }
+
+  delete(group: Group) {
+    console.log('delete');
+    if (group.id === null) {
+      return;
+    }
+    this.groupsService.delete(group.id).subscribe(() => this.dataSource.loadData());
   }
 }

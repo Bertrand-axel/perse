@@ -1,1 +1,68 @@
-<p>group-form works!</p>
+<form [formGroup]="form">
+
+  <p>
+    <mat-form-field>
+      <mat-label>name</mat-label>
+      <input matInput id="name" type="text" formControlName="name">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>origin</mat-label>
+      <input matInput id="origin" type="text" formControlName="origin">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>town</mat-label>
+      <input matInput id="town" type="text" formControlName="town">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>startingYear</mat-label>
+      <input matInput id="startingYear" type="number" formControlName="startingYear">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>separationYear</mat-label>
+      <input matInput id="separationYear" type="number" formControlName="separationYear">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>founder</mat-label>
+      <input matInput id="founder" type="text" formControlName="founder">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>members</mat-label>
+      <input matInput id="members" type="number" formControlName="members">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>musicalCurrent</mat-label>
+      <input matInput id="musicalCurrent" type="text" formControlName="musicalCurrent">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>presentation</mat-label>
+      <input matInput id="presentation" type="text" formControlName="presentation">
+    </mat-form-field>
+  </p>
+
+  <mat-button-toggle (click)="save()">Save</mat-button-toggle>
+
+</form>
